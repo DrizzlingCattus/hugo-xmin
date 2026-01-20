@@ -12,6 +12,7 @@
   <body>
     <nav>
     <ul class="menu">
+      <li><a href="/"> {{ (site.Params.label.text | default site.Title) }} </a></li>
       {{ range .Site.Menus.main }}
       <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
       {{ end }}

@@ -9,12 +9,25 @@
 <br/>
 {{ partial "post-heatmap.html" . }}
 
+<style>
+.post-number {
+  display: inline-block;
+  min-width: 30px;
+  font-weight: bold;
+  color: #666;
+}
+</style>
+
 <ul>
   {{ $pages := .Pages }}
   {{ if .IsHome }}{{ $pages = .Site.RegularPages }}{{ end }}
-  {{ range (where $pages "Section" "!=" "") }}
+  {{ $filteredPages := where $pages "Section" "!=" "" }}
+  {{ $total := len $filteredPages }}
+
+  {{ range $index, $page := $filteredPages.ByDate.Reverse }}
   <li>
-    <span class="date">{{ .Date.Format "2006/01/02" }}</span>
+    <span class="post-number">No.{{ sub $total $index }}</span>
+    <span class="date">({{ .Date.Format "2006/01/02" }})</span>
     <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
   </li>
   {{ end }}

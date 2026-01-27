@@ -6,6 +6,9 @@
 
 {{ .Content }}
 
+<br/>
+{{ partial "post-heatmap.html" . }}
+
 <ul>
   {{ $pages := .Pages }}
   {{ if .IsHome }}{{ $pages = .Site.RegularPages }}{{ end }}

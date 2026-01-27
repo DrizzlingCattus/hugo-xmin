@@ -1,0 +1,59 @@
+<div id="cal-heatmap"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<!-- cal-heatmap -->
+<script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/cal-heatmap/dist/cal-heatmap.css">
+
+<!-- Tooltip 플러그인 (선택사항) -->
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/cal-heatmap@4/dist/plugins/Tooltip.min.js"></script>
+
+<!-- Legend 플러그인 (선택사항) -->
+<script src="https://unpkg.com/cal-heatmap@4/dist/plugins/Legend.min.js"></script>
+
+<script>
+fetch('/post-activity.json')
+  .then(response => response.json())
+  .then(data => {
+    // 1. 데이터 구조 확인
+    console.log('전체 데이터:', data);
+
+    const cal = new CalHeatmap();
+    cal.paint({
+      data: {
+        source: data,
+	x: 'date',
+	y: 'value',
+      },
+      date: {
+        start: new Date(new Date().setMonth(new Date().getMonth() - 11)),
+      },
+      range: 12,
+
+      domain: {
+        type: 'month',
+        label: { text: 'YYYY MMM' },
+	gutter: 5,
+      },
+      subDomain: {
+        type: 'day',
+        radius: 2,
+      },
+      scale: {
+      color: {
+        type: 'threshold',
+        range: ['#40c463', '#30a14e', '#216e39'],
+      },
+  },
+      itemSelector: '#cal-heatmap',
+    }).then(() => {
+      console.log('cal-heatmap 렌더링 완료');
+    }).catch(error => {
+      console.error('cal-heatmap 에러:', error);
+    });
+  }).catch(error => {
+    console.error('post-activity.json 로드 실패:', error);
+  })
+</script>
